@@ -10,9 +10,40 @@ There should be whitespace between paragraphs.
 
 There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
 
-# Header 1
+# ABCD Sex Differences replication project
 
 This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
+
+## Code Replication:
+
+1.  Atlas Generation and Network Parcellation
+  1. 
+  1. 
+1.  Discovery and Replication sample generation
+  1. 
+  1. 
+1.  Univariate Analysis
+  1. 
+  1. 
+1.  Multivariate Analysis
+  1. 
+  1. 
+1.  Spin tests
+  1. 
+  1. 
+1.  Chromosomal enrichment analysis
+  1. 
+  1. 
+1.  Cell Type enrichment analysis
+  1. 
+  1. 
+1.  PSP enrichment analysis
+  1. 
+  1. 
+
+
+
+
 
 ## Header 2
 
