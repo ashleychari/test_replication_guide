@@ -14,30 +14,35 @@ There should be whitespace between paragraphs. We recommend including a README, 
 
 This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
 
-## Code Replication:
+# Code Documentation:
 
-1.  Atlas Generation and Network Parcellation
+### Discovery and Replication sample generation
+  1. Run the [get_data_for_ridge.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/discovery%20and%20replication%20sample%20setup%20scripts/get_data_for_ridge.R) script created by Arielle Keller using the data in the `FilesForAdam` folder
+    > You'll need to change the save filename/path in the script
+  1. Next, run the [create_discovery_replication_set_siblings_removed.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/discovery%20and%20replication%20sample%20setup%20scripts/create_discovery_replication_sets_siblings_removed.py) to create the final discovery and replication sets with the removal of siblings. These samples are used in subsequent steps.
+    > You'll need to change the save filenames/paths
+### Atlas Generation and Network Parcellation
+  > Will need to change paths to discovery and replication datasets and the paths that you want to save the resulting files
+  1. Run the [calc_group_average_mat.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/atlas_visualization/calc_group_average_mat.py) script to get the group average matrix for the networks for all of the subjects in the discovery and replication sets combined
+  1. Run the [create_hard_parcel.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/atlas_visualization/get_subject_parcels.py) script to get the hard parcellations from networks 3, 4, and 12
+  1. Run the [create_soft_parcel.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/atlas_visualization/get_subject_parcels.py) script to get the soft parcellations from networks 3, 4, and 12
+  1. Run the [get_subject_parcels.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/atlas_visualization/get_subject_parcels.py) script to get the hard and soft parcellations for 4 random subjects with 2 subjects being male and 2 being female
+### Univariate Analysis
   1. 
   1. 
-1.  Discovery and Replication sample generation
+### Multivariate Analysis
   1. 
   1. 
-1.  Univariate Analysis
+### Spin tests
   1. 
   1. 
-1.  Multivariate Analysis
+### Chromosomal enrichment analysis
   1. 
   1. 
-1.  Spin tests
+### Cell Type enrichment analysis
   1. 
   1. 
-1.  Chromosomal enrichment analysis
-  1. 
-  1. 
-1.  Cell Type enrichment analysis
-  1. 
-  1. 
-1.  PSP enrichment analysis
+### PSP enrichment analysis
   1. 
   1. 
 
