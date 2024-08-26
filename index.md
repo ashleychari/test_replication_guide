@@ -32,8 +32,11 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
   1. Run the [get_subject_parcels.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/atlas_visualization/get_subject_parcels.py) script to get the hard and soft parcellations for 4 random subjects with 2 subjects being male and 2 being female
 
 ### Part 3: Univariate Analysis
-  1. 
-  1. 
+  1.  Use [convert_mat.py]() to convert the final_UV.mat files into csvs
+
+    > NOTE: This step can be skipped if you change the script to use `readMat` from the `R.Matlab` package instead of base R's `read.csv` function. However, you will have to setup a new singularity container with the necessary packages 
+
+  1. Create a singularity container or use the one I created stored in `ashpfnsexdiffabcd` 
 
 ### Part 4: Multivariate Analysis
   1. 
@@ -84,36 +87,28 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
 
 ### Part 6: Spin tests
   1. Add medial wall back in to all of the data (gams uncorrected discovery abs sum, gams uncorrected replication abs sum, svm discovery abs sum haufe transformed, svm replication abs sum haufe transformed) using [add_medial_wall.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/add_medial_wall.R). Save results into csv that will later be converted into gii files.
+
   1. Use the [convert_to_gifti.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/convert_to_gifti.py) script to convert the data in the previous step into gii files. The following command can be run in terminal (the last argument indicated whether the data is from PNC or not): 
-  ```
+
+  ```bash
   python3 convert_to_gifti.py "medial_wall_maps/gams_discovery_medial_wall_map.csv" "results_gifti/gams_abs_sum_discovery_map.gii" N
   ```
-  1. Run the [spin_test.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/spin_test.py) script using the converted gii files for the following tests:
 
-    > gams discovery vs gams replication
-
-    > gams discovery vs svm discovery 
-
-    > svm discovery vs svm replication
-
-    > gams replication vs svm replication
-
-    The script can be run using the following example command:
-    <br>
-
-    ```
-    python3 spin_test.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_discovery_map.gii' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_replication_map.gii' "fsLR" 'Gams discovery vs replication' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/results'
-    ```
+  1. Run the [spin_test.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/spin_test.py) script using the converted gii files. The script can be run using the following example command:
+  ```bash
+  python3 spin_test.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_discovery_map.gii' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_replication_map.gii' "fsLR" 'Gams discovery vs replication' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/results'
+  ```
 
   1. Once all spin tests have been completed, you can compile all of the results from the different tests as long as they are in the same folder by using the [compile_spin_tests.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/compile_spin_tests.py). The script can be run by calling the name of the script followed by the folder that the spin test results are stored in (might need to be the full path if the script is not in the same directory as the results):
-  ```
+
+  ```bash
   python3 compile_spin_tests.py spin_test_results_072524
   ```
 
   _The following instructions apply to the PNC data only_
   1. Grab the PNC gams abs sum data from `/cbica/projects/abcdpfnsexdiff/funcParcelSexDiff/inputData/spintest/`
   1. Convert the csv files of the gams abs sum LH and RH results into gii files using [convert_to_gifti.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/convert_to_gifti.py)
-   ```
+   ```bash
    python3 convert_to_gifti.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/PNC_data/GamSexAbssum_lh.csv' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/PNC_data/gams_abs_sum_lh.gii' Y
    ```
   1. Use the [PNC_to_fslr.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/PNC_to_fslr.py) to convert the PNC results to flsr space
