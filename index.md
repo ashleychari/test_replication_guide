@@ -19,7 +19,7 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
 ### Part 1: Discovery and Replication sample generation
   > You'll need to change the save filename/paths in the script
   
-  1. Run the [get_data_for_ridge.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/discovery%20and%20replication%20sample%20setup%20scripts/get_data_for_ridge.R) script created by Arielle Keller using the data in the `FilesForAdam` folder
+  1. Run the [get_data_for_ridge.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/discovery%20and%20replication%20sample%20setup%20scripts/get_data_for_ridge.R) script created by Arielle Keller using the data in the `FilesForAdam` folder originally from `/cbica/projects/abcdfnets/scripts/FilesForAdam/`
   1. Next, run the [create_discovery_replication_set_siblings_removed.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/discovery%20and%20replication%20sample%20setup%20scripts/create_discovery_replication_sets_siblings_removed.py) script to create the final discovery and replication sets with the removal of siblings. These samples are used in subsequent steps.
 
 
@@ -57,30 +57,63 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
       <br>  
       > save `L` as `lh_Schaefer1000_7net_L.csv`
 
-  1. Save probe annotation file
+  1. Save probe annotation file using `ROIxGene_Schaefer1000_INT.mat` and [create_probe_annotation.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/genetics/create_probe_annotation.py)
+      > Save the filename as `GeneSymbol.csv`
+  
+  1. Grab the rest of the files needed for the scripts below from `/cbica/projects/ash_pfn_sex_diff_abcd/dropbox/genetics_files/` which originally came from the `abcdpfnsexdiff` project folder on cubic
 
-      > Open `ROIxGene_Schaefer1000_INT.mat` in matlab <br> 
-      <br>
-      > Gene = cell2table(probeInformation.GeneSymbol); <br> 
-      <br>
-      > writetable(Gene, '/Users/sheilash/Desktop/projects/pfn_sex_diff/genetics/sensitivity_analyses/parcellation/data/genes/parcellations/schaefer1000/GeneSymbol.csv')  
-  <br>
 
 ### Chromosomal enrichment analysis
   1. Run the [ABCD_wSex_cor_gene_schaefer403_net7_discovery_20242108.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/genetics/chromosome_enrichment/ABCD_wSex_cor_gene_schaefer403_net7_discovery_20242108.R) script to get the chromosomal enrichments, recommend running this in Rstudio
-  1. 
+    > Make sure to change the filepaths to use the files created above
+    <br>
+    > Also make sure to change the filepaths for saving the intermediate files such as pvalues table and top 20 X chromosome genes
 
 ### Cell Type enrichment analysis
   1. Run the [cell_types_LAKE.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/genetics/celltype_enrichment/cell_types_LAKE.R) script to get the cell type enrichments, recommend running this in Rstudio
-  1. 
+    > Make sure to change the filepaths to use the files created above
+    <br>
+    > Also make sure to change the filepaths for saving the intermediate files such as pvalues table and top 20 tables for astro, ex5b, ex1, and oli
 
 ### PSP enrichment analysis
   1. Run the [PSP_plots.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/genetics/PSP_enrichment/PSP_plots.R) script to get the PSP enrichments, recommend running this in Rstudio
-  1. 
+    > Make sure to change the filepaths to use the files created above and for the pvalue table
 
 ### Part 6: Spin tests
-  1. 
-  1. 
+  1. Add medial wall back in to all of the data (gams uncorrected discovery abs sum, gams uncorrected replication abs sum, svm discovery abs sum haufe transformed, svm replication abs sum haufe transformed) using [add_medial_wall.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/add_medial_wall.R). Save results into csv that will later be converted into gii files.
+  1. Use the [convert_to_gifti.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/convert_to_gifti.py) script to convert the data in the previous step into gii files. The following command can be run in terminal (the last argument indicated whether the data is from PNC or not): 
+  ```
+  python3 convert_to_gifti.py "medial_wall_maps/gams_discovery_medial_wall_map.csv" "results_gifti/gams_abs_sum_discovery_map.gii" N
+  ```
+  1. Run the [spin_test.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/spin_test.py) script using the converted gii files for the following tests:
+    > gams discovery vs gams replication
+    > gams discovery vs svm discovery 
+    > svm discovery vs svm replication
+    > gams replication vs svm replication
+
+  The script can be run using the following example command:
+  ```
+  python3 spin_test.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_discovery_map.gii' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_replication_map.gii' "fsLR" 'Gams discovery vs replication' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/results'
+  ```
+  1. Once all spin tests have been completed, you can compile all of the results from the different tests as long as they are in the same folder by using the [compile_spin_tests.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/compile_spin_tests.py). The script can be run by calling the name of the script followed by the folder that the spin test results are stored in (might need to be the full path if the script is not in the same directory as the results):
+  ```
+  python3 compile_spin_tests.py spin_test_results_072524
+  ```
+
+   > The following instructions apply to the PNC data only
+   1. Grab the PNC gams abs sum data from `/cbica/projects/abcdpfnsexdiff/funcParcelSexDiff/inputData/spintest/`
+   1. Convert the csv files of the gams abs sum LH and RH results into gii files using [convert_to_gifti.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/convert_to_gifti.py)
+   ```
+   python3 convert_to_gifti.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/PNC_data/GamSexAbssum_lh.csv' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/PNC_data/gams_abs_sum_lh.gii' Y
+   ```
+   1. Use the [PNC_to_fslr.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/PNC_to_fslr.py) to convert the PNC results to flsr space
+   1. Run [spin_test.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/spin_test.py) using the following command:
+   ```
+   python3 spin_test.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/PNC_data/Gam_abs_sum_fslr_test.gii' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/ABCD_data/gams_abs_sum_discovery_uncorrected.gii' "fsLR" 'PNC gams discovery vs ABCD gams discovery fslr' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/results'
+   ```
+  
+
+
 
 
 
