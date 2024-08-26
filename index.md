@@ -44,15 +44,15 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
 
   1. Change the filepaths for the results folder and subject data in the [abcd_unvariate_analysis.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/univariate_analysis/GAMs%20scripts/R%20scripts/abcd_univariate_analysis.R) script for the discovery data, which will run a GAM at each vertex to determine the effect of sex while controlling for age and motion. The script assumes that the subject data has siblings removed. Next, run the wrapper script [run_univariate_analysis.sh](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/univariate_analysis/GAMs%20scripts/shell%20(job)%20wrappers/run_univariate_analysis.sh) via SGE using the following command:
 
-  ```
-  qsub -l h_vmem=25G,s_vmem=25G /cbica/projects/ash_pfn_sex_diff_abcd/dropbox/run_univariate_analysis.sh
-  ```
+    ```
+    qsub -l h_vmem=25G,s_vmem=25G /cbica/projects/ash_pfn_sex_diff_abcd/dropbox/run_univariate_analysis.sh
+    ```
 
   1. Similarly, do the same thing but for the replication data and use [abcd_unvariate_analysis_replication.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/univariate_analysis/GAMs%20scripts/R%20scripts/abcd_univariate_analysis.R) script and then run the wrapper script [run_univariate_replication.sh](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/univariate_analysis/GAMs%20scripts/shell%20(job)%20wrappers/run_univariate_replication.sh) via SGE using the following command:
 
-  ```
-  qsub -l h_vmem=25G,s_vmem=25G /cbica/projects/ash_pfn_sex_diff_abcd/dropbox/run_univariate_replication.sh
-  ```
+    ```
+    qsub -l h_vmem=25G,s_vmem=25G /cbica/projects/ash_pfn_sex_diff_abcd/dropbox/run_univariate_replication.sh
+    ```
 
   1. Once the gams models have been run, create the unthresholded absolute sum map from the results using the [write_effect_map_abs_sum.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/univariate_analysis/workbench%20setup%20scripts/write_effect_map_abs_sum.py) script. You'll need to change the arguments in the two function calls in the main execution block of the script.
 
@@ -61,9 +61,10 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
   _NOTE: The script uses a dscalar.nii file of the fslr format as a temporary header to make the new CIFTI file. It is only used to structure the file._
   
   The script can be run like the following example command:
-  ```bash
-  python3 write_effect_map_to_cifti.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/multivariate_analysis/svm_072324_run/abs_sum_weight_brain_mat_discovery_haufe_100_runs_072324.npy' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/multivariate_analysis/svm_072324_run/svm_discovery_abs_sum_haufe_weights_072324.dscalar.nii'
-  ```
+
+    ```bash
+    python3 write_effect_map_to_cifti.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/multivariate_analysis/svm_072324_run/abs_sum_weight_brain_mat_discovery_haufe_100_runs_072324.npy' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/multivariate_analysis/svm_072324_run/svm_discovery_abs_sum_haufe_weights_072324.dscalar.nii'
+    ```
 
   1. Load the resulting dscalar.nii file from the previous step into workbench to get the visualization.
 
@@ -86,9 +87,10 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
   1. Use the [fslr_to_fsaverage5.sh](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/genetics/fslr_to_fsaverage5.sh) script to resample the gams uncorrected abs sum discovery data, gams uncorrected abs sum replication data, gams fdr abs sum discovery data, and gams fdr abs sum replication data from fslr to fsaverage5. Parameters include path to the map (dscalar.nii file) you're trying to resample to fsaverage5 space and the name that you want to label the resulting files. The file that you'll want to use in the enrichment analyses will end with `_LH.fsaverage5.func.gii`.
   
   Example command below:
-  ```bash
-  ./fslr_to_fsaverage5.sh /Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/univariate_analysis/univariate_analysis_results/uncorrected_abs_sum_matrix_discovery.dscalar.nii gams_uncorrected_discovery
-  ```
+
+    ```bash
+    ./fslr_to_fsaverage5.sh /Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/univariate_analysis/univariate_analysis_results/uncorrected_abs_sum_matrix_discovery.dscalar.nii gams_uncorrected_discovery
+    ```
 
   1. Download Download `AHBAProcessed.zip` and `AHBAData.zip` from [https://figshare.com/articles/dataset/AHBAdata/6852911](https://figshare.com/articles/dataset/AHBAdata/6852911)   
 
@@ -127,37 +129,38 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
 
   1. Use the [convert_to_gifti.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/convert_to_gifti.py) script to convert the data in the previous step into gii files. The following command can be run in terminal (the last argument indicated whether the data is from PNC or not): 
 
-  ```bash
-  python3 convert_to_gifti.py "medial_wall_maps/gams_discovery_medial_wall_map.csv" "results_gifti/gams_abs_sum_discovery_map.gii" N
-  ```
+    ```bash
+    python3 convert_to_gifti.py "medial_wall_maps/gams_discovery_medial_wall_map.csv" "results_gifti/gams_abs_sum_discovery_map.gii" N
+    ```
 
   1. Run the [spin_test.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/spin_test.py) script using the converted gii files. The script can be run using the following example command:
 
-  ```bash
-  python3 spin_test.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_discovery_map.gii' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_replication_map.gii' "fsLR" 'Gams discovery vs replication' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/results'
-  ```
+    ```bash
+    python3 spin_test.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_discovery_map.gii' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_replication_map.gii' "fsLR" 'Gams discovery vs replication' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/results'
+    ```
 
   1. Once all spin tests have been completed, you can compile all of the results from the different tests as long as they are in the same folder by using the [compile_spin_tests.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/compile_spin_tests.py). The script can be run by calling the name of the script followed by the folder that the spin test results are stored in (might need to be the full path if the script is not in the same directory as the results):
 
-  ```bash
-  python3 compile_spin_tests.py spin_test_results_072524
-  ```
+    ```bash
+    python3 compile_spin_tests.py spin_test_results_072524
+    ```
 
   _The following instructions apply to the PNC data only_
   1. Grab the PNC gams abs sum data from `/cbica/projects/abcdpfnsexdiff/funcParcelSexDiff/inputData/spintest/`
 
   1. Convert the csv files of the gams abs sum LH and RH results into gii files using [convert_to_gifti.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/convert_to_gifti.py)
-   ```bash
-   python3 convert_to_gifti.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/PNC_data/GamSexAbssum_lh.csv' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/PNC_data/gams_abs_sum_lh.gii' Y
-   ```
+
+    ```bash
+    python3 convert_to_gifti.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/PNC_data/GamSexAbssum_lh.csv' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/PNC_data/gams_abs_sum_lh.gii' Y
+    ```
 
   1. Use the [PNC_to_fslr.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/PNC_to_fslr.py) to convert the PNC results to flsr space
 
   1. Run [spin_test.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/spin_test.py) using the following command:
 
-   ```
-   python3 spin_test.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/PNC_data/Gam_abs_sum_fslr_test.gii' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/ABCD_data/gams_abs_sum_discovery_uncorrected.gii' "fsLR" 'PNC gams discovery vs ABCD gams discovery fslr' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/results'
-   ```
+    ```
+    python3 spin_test.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/PNC_data/Gam_abs_sum_fslr_test.gii' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/ABCD_data/gams_abs_sum_discovery_uncorrected.gii' "fsLR" 'PNC gams discovery vs ABCD gams discovery fslr' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/results'
+    ```
   
 
 
