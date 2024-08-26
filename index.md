@@ -90,18 +90,21 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
   ```
   1. Run the [spin_test.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/spin_test.py) script using the converted gii files for the following tests:
 
-    - gams discovery vs gams replication
-    - gams discovery vs svm discovery 
-    - svm discovery vs svm replication
-    - gams replication vs svm replication
+    > gams discovery vs gams replication
 
-  The script can be run using the following example command:
-   <br>
+    > gams discovery vs svm discovery 
 
-  ```
-  python3 spin_test.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_discovery_map.gii' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_replication_map.gii' "fsLR" 'Gams discovery vs replication' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/results'
-  ```
-  
+    > svm discovery vs svm replication
+
+    > gams replication vs svm replication
+
+    The script can be run using the following example command:
+    <br>
+
+    ```
+    python3 spin_test.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_discovery_map.gii' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_replication_map.gii' "fsLR" 'Gams discovery vs replication' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/results'
+    ```
+
   1. Once all spin tests have been completed, you can compile all of the results from the different tests as long as they are in the same folder by using the [compile_spin_tests.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/compile_spin_tests.py). The script can be run by calling the name of the script followed by the folder that the spin test results are stored in (might need to be the full path if the script is not in the same directory as the results):
   ```
   python3 compile_spin_tests.py spin_test_results_072524
