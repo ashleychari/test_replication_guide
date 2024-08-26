@@ -65,19 +65,22 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
 
 ### Chromosomal enrichment analysis
   1. Run the [ABCD_wSex_cor_gene_schaefer403_net7_discovery_20242108.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/genetics/chromosome_enrichment/ABCD_wSex_cor_gene_schaefer403_net7_discovery_20242108.R) script to get the chromosomal enrichments, recommend running this in Rstudio
-    > Make sure to change the filepaths to use the files created above
-    <br>
-    > Also make sure to change the filepaths for saving the intermediate files such as pvalues table and top 20 X chromosome genes
+
+  > Make sure to change the filepaths to use the files created above
+
+  > Also make sure to change the filepaths for saving the intermediate files such as pvalues table and top 20 X chromosome genes
 
 ### Cell Type enrichment analysis
   1. Run the [cell_types_LAKE.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/genetics/celltype_enrichment/cell_types_LAKE.R) script to get the cell type enrichments, recommend running this in Rstudio
-    > Make sure to change the filepaths to use the files created above
-    <br>
-    > Also make sure to change the filepaths for saving the intermediate files such as pvalues table and top 20 tables for astro, ex5b, ex1, and oli
+  
+  > Make sure to change the filepaths to use the files created above
+    
+  > Also make sure to change the filepaths for saving the intermediate files such as pvalues table and top 20 tables for astro, ex5b, ex1, and oli
 
 ### PSP enrichment analysis
   1. Run the [PSP_plots.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/genetics/PSP_enrichment/PSP_plots.R) script to get the PSP enrichments, recommend running this in Rstudio
-    > Make sure to change the filepaths to use the files created above and for the pvalue table
+
+  > Make sure to change the filepaths to use the files created above and for the pvalue table
 
 ### Part 6: Spin tests
   1. Add medial wall back in to all of the data (gams uncorrected discovery abs sum, gams uncorrected replication abs sum, svm discovery abs sum haufe transformed, svm replication abs sum haufe transformed) using [add_medial_wall.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/add_medial_wall.R). Save results into csv that will later be converted into gii files.
