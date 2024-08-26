@@ -72,7 +72,7 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
 
 ### Cell Type enrichment analysis
   1. Run the [cell_types_LAKE.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/genetics/celltype_enrichment/cell_types_LAKE.R) script to get the cell type enrichments, recommend running this in Rstudio
-  
+
   > Make sure to change the filepaths to use the files created above
     
   > Also make sure to change the filepaths for saving the intermediate files such as pvalues table and top 20 tables for astro, ex5b, ex1, and oli
@@ -89,12 +89,14 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
   python3 convert_to_gifti.py "medial_wall_maps/gams_discovery_medial_wall_map.csv" "results_gifti/gams_abs_sum_discovery_map.gii" N
   ```
   1. Run the [spin_test.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/spin_test.py) script using the converted gii files for the following tests:
-    > gams discovery vs gams replication
-    > gams discovery vs svm discovery 
-    > svm discovery vs svm replication
-    > gams replication vs svm replication
+
+    1. gams discovery vs gams replication
+    1. gams discovery vs svm discovery 
+    1. svm discovery vs svm replication
+    1. gams replication vs svm replication
 
     The script can be run using the following example command:
+
     ```
     python3 spin_test.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_discovery_map.gii' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/results_gifti/gams_abs_sum_replication_map.gii' "fsLR" 'Gams discovery vs replication' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/results'
     ```
@@ -103,7 +105,7 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
   python3 compile_spin_tests.py spin_test_results_072524
   ```
 
-   > The following instructions apply to the PNC data only
+  _The following instructions apply to the PNC data only_
   1. Grab the PNC gams abs sum data from `/cbica/projects/abcdpfnsexdiff/funcParcelSexDiff/inputData/spintest/`
   1. Convert the csv files of the gams abs sum LH and RH results into gii files using [convert_to_gifti.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/spin_tests/convert_to_gifti.py)
    ```
