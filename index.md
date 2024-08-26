@@ -76,8 +76,37 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
 
 
 ### Part 4: Multivariate Analysis
-  1. 
-  1. 
+  1. Run [create_nonzero_matrix.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/multivariate_analysis/nonzero%20matrix%20creation%20scripts/create_nonzero_matrix.py) to setup the non-zero features matrix for subsequent steps. 
+
+  2. Next, run [run_2fold_svm_resmulti_times_parallel_w_ROC.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/multivariate_analysis/SVM%20scripts/python%20scripts/run_2fold_svm_resmulti_times_parallel_w_ROC.py) by running the wrapper script [svm_resmulti_times_parallel_w_ROC_slurm.sh](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/multivariate_analysis/SVM%20scripts/shell%20(job)%20wrappers/svm_resmulti_times_parallel_w_ROC_slurm.sh). The wrapper script submits an array job of size 100 which will run the `run_2fold` script 100 times (each run as a separate job) via slurm. The svm script runs 2 fold cross validation using the nonzero features matrix to predict sex using SVM. Run the following command to run the script:
+
+  ```bash
+  sbatch svm_resmulti_times_parallel_w_ROC_slurm.sh
+  ```
+
+  3.  Create the weight matrix by taking the mean of each of the coefficients from all the fold instances and save this weight matrix using the [svm_workbench_visualization_multi_times_matrix.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/multivariate_analysis/SVM%20workbench%20visualization/svm_workbench_visualization_multi_times_matrix.py) script. 
+
+  4. Use the coefficient matrix created in the previous step in the [haufe_transform_weights.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/multivariate_analysis/haufe%20transformation%20scripts/haufe_transform_weights.py) script to do a haufe transformation on the coefficients. Use the [haufe_transform_weights.sh](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/multivariate_analysis/haufe%20transformation%20scripts/haufe_transform_weights.sh) to run the script by running the following command: 
+
+  ```bash
+  qsub -l h_vmem=500G,s_vmem=500G haufe_transform_weights.sh
+  ```
+
+  5. Use the haufe transformed weight matrix from the previous step in the [svm_stacked_barplot.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/multivariate_analysis/SVM%20weights%20barplot/svm_stacked_barplot.R) script to get the stacked barplot of feature importance for both Males and Females. I ran this in Rstudio
+
+  6. Use the haufe transformed weight matrix in the [sum_abs_weights_matrix.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/multivariate_analysis/SVM%20brain%20map%20plot/sum_abs_weights_matrix_svm.py) to get the absolute value sum of the weights and save this array.
+
+  7. Use [write_effect_map_to_cifti_svm.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/multivariate_analysis/SVM%20brain%20map%20plot/write_effect_map_to_cifti_svm.py) to convert the matrix in the previous step into a CIFTI file format for visualization.
+
+  8. Use the dscalar.nii file in workbench to get the visualization of the weights.
+
+  9. In order to run the permutation tests, run the [svm_permutation_parallel.sh](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/multivariate_analysis/SVM%20scripts/shell%20(job)%20wrappers/svm_permutation_parallel.sh) which calls the [svm_1000_permutation_scrambled_outcome_parallel.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/multivariate_analysis/SVM%20scripts/python%20scripts/svm_1000_permutation_scrambled_outcome_parallel.py) script which scrambles the sex outcome variable and creates 1000 null models to compare to the accuracy of the 100 models. Use the following command to run the script: 
+
+  ```bash
+  sbatch svm_permutation_parallel.sh
+  ```
+
+  10. To generate the ROC curve, run the [create_ROC_curve.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/multivariate_analysis/roc_curve/create_ROC_curve.py) with the results from the 100 runs.
 
 ### Part 5: Genetics
   > The files generated from the steps below will be used in the enrichement analyses.
@@ -162,3 +191,11 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
   python3 spin_test.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/PNC_data/Gam_abs_sum_fslr_test.gii' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/ABCD_data/gams_abs_sum_discovery_uncorrected.gii' "fsLR" 'PNC gams discovery vs ABCD gams discovery fslr' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/results'
   ```
   
+### Part 6: Other plots and figures
+  1. To create the hex plots, use the [hex_plots.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/hex_plots/hex_plots.R) absolute sum matrices as arguments along with the data labels like the following command:
+
+  ```bash
+  Rscript hex_plots.R "/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/spin_tests/data/PNC_data/PNC_gams_abs_sum_all_fslr.csv" "PNC GAMs discovery loadings" "/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/univariate_analysis/univariate_analysis_results/uncorrected_abs_sum_matrix_discovery.csv" "ABCD GAMs discovery loadings" "/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/hex_plots/plots/pnc_gams_disc_vs_abcd_gams_disc_hex_plot.png"
+  ```
+
+  2. To create the figure s8 plot, use the data in the intermediate step of the significant vertices or svm weights barplots and run the [group_networks.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/figure_s8_barplots/group_networks.py) to group by netColor (or network group) and then use this data as input into [figure_s8_barplot.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/figure_s8_barplots/figure_s8_barplot.R).
