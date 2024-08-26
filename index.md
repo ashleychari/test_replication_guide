@@ -36,9 +36,9 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
   1. Run the [get_subject_parcels.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/atlas_visualization/get_subject_parcels.py) script to get the hard and soft parcellations for 4 random subjects with 2 subjects being male and 2 being female
 
 ### Part 3: Univariate Analysis
-  1.  Use [convert_mat.py]() to convert the final_UV.mat files into csvs
+  1.  Use [convert_mat.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/discovery%20and%20replication%20sample%20setup%20scripts/convert_mat.py) to convert the final_UV.mat files into csvs
 
-    _NOTE: This step can be skipped if you change the script to use `readMat` from the `R.Matlab` package instead of base R's `read.csv` function. However, you will have to setup a new singularity container with the necessary packages_
+  _NOTE: This step can be skipped if you change the script to use `readMat` from the `R.Matlab` package instead of base R's `read.csv` function. However, you will have to setup a new singularity container with the necessary packages_
 
   1. Create a singularity container or use the one I created stored in `ashpfnsexdiffabcd/software/containers/` called `sex_differences_replication_0.0.3.sif`
 
