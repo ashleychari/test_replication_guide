@@ -20,7 +20,7 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
   > You'll need to change the save filename/paths in the script
   
   1. Run the [get_data_for_ridge.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/discovery%20and%20replication%20sample%20setup%20scripts/get_data_for_ridge.R) script created by Arielle Keller using the data in the `FilesForAdam` folder originally from `/cbica/projects/abcdfnets/scripts/FilesForAdam/`
-  
+
   1. Next, run the [create_discovery_replication_set_siblings_removed.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/discovery%20and%20replication%20sample%20setup%20scripts/create_discovery_replication_sets_siblings_removed.py) script to create the final discovery and replication sets with the removal of siblings. These samples are used in subsequent steps.
 
 
@@ -42,7 +42,37 @@ This is a normal paragraph following a header. GitHub is a code hosting platform
 
   1. Create a singularity container or use the one I created stored in `ashpfnsexdiffabcd/software/containers/` called `sex_differences_replication_0.0.3.sif`
 
-  1. Run the [abcd_unvariate_analysis.R]()
+  1. Change the filepaths for the results folder and subject data in the [abcd_unvariate_analysis.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/univariate_analysis/GAMs%20scripts/R%20scripts/abcd_univariate_analysis.R) script for the discovery data, which will run a GAM at each vertex to determine the effect of sex while controlling for age and motion. The script assumes that the subject data has siblings removed. Next, run the wrapper script [run_univariate_analysis.sh](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/univariate_analysis/GAMs%20scripts/shell%20(job)%20wrappers/run_univariate_analysis.sh) via SGE using the following command:
+
+  ```
+  qsub -l h_vmem=25G,s_vmem=25G /cbica/projects/ash_pfn_sex_diff_abcd/dropbox/run_univariate_analysis.sh
+  ```
+
+  1. Similarly, do the same thing but for the replication data and use [abcd_unvariate_analysis_replication.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/univariate_analysis/GAMs%20scripts/R%20scripts/abcd_univariate_analysis.R) script and then run the wrapper script [run_univariate_replication.sh](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/univariate_analysis/GAMs%20scripts/shell%20(job)%20wrappers/run_univariate_replication.sh) via SGE using the following command:
+
+  ```
+  qsub -l h_vmem=25G,s_vmem=25G /cbica/projects/ash_pfn_sex_diff_abcd/dropbox/run_univariate_replication.sh
+  ```
+
+  1. Once the gams models have been run, create the unthresholded absolute sum map from the results using the [write_effect_map_abs_sum.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/univariate_analysis/workbench%20setup%20scripts/write_effect_map_abs_sum.py) script. You'll need to change the arguments in the two function calls in the main execution block of the script.
+
+  1. Convert the file obtained from the previous step into a CIFTI format to be loaded into workbench by using the [write_effect_map_to_cifti.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/univariate_analysis/workbench%20setup%20scripts/write_effect_map_to_cifti.py). 
+
+  _NOTE: The script uses a dscalar.nii file of the fslr format as a temporary header to make the new CIFTI file. It is only used to structure the file._
+  
+  The script can be run like the following example command:
+  ```bash
+  python3 write_effect_map_to_cifti.py '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/multivariate_analysis/svm_072324_run/abs_sum_weight_brain_mat_discovery_haufe_100_runs_072324.npy' '/Users/ashfrana/Desktop/code/abcd_sex_pfn_replication/multivariate_analysis/svm_072324_run/svm_discovery_abs_sum_haufe_weights_072324.dscalar.nii'
+  ```
+
+  1. Load the resulting dscalar.nii file from the previous step into workbench to get the visualization.
+
+  1. To get the significant veritces barplot, first run the [make_barplot_mat.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/univariate_analysis/barplot%20scripts/make_barplot_mat.py) script to get a matrix of the significant vertices for each network.
+
+  1. Use the [create_barplot.R](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/univariate_analysis/barplot%20scripts/create_barplot.R) to get the barplot of significant vertices for each network. I ran this in Rstudio.
+
+  1. To create the significant vertices for networks 3, 9, and 12, use the [get_individual_network_mat.py](https://github.com/ashleychari/abcd_sex_pfn_replication/blob/main/univariate_analysis/individual%20network%20scripts/get_individual_network_mat.py) script to get each individual network from the matrix in the previous step.
+
 
 ### Part 4: Multivariate Analysis
   1. 
